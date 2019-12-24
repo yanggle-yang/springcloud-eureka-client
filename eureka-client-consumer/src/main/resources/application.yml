@@ -1,0 +1,30 @@
+# 服务名称
+spring:
+  application:
+    name: app-consumer
+  profiles:
+    active: dev
+
+# 服务端口
+server:
+  port: 10002
+
+# Eureka配置
+eureka:
+  instance:
+    prefer-ip-address: true
+    ip-address: 127.0.0.1
+    instance-id: ${eureka.instance.ip-address}:${spring.application.name}:${server.port}
+
+    #客户端向服务器发送心跳的频率
+    lease-renewal-interval-in-seconds: 30
+  client:
+    #是否将自己作为客户端注册到注册中心(缺省true), 单点设置为false
+    #register-with-eureka: false
+    #是否从注册中心获取注册信息(缺省true), 单点设置为false
+    #fetch-registry: false
+    #从注册中心获取注册信息的间隔时间(缺省30s)
+    registry-fetch-interval-seconds: 30
+
+    service-url:
+      defaultZone: http://localhost:9001/eureka/
