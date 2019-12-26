@@ -4,34 +4,50 @@ config:
       key-store: client.p12
       key-store-password: client
 
-# 服务名称
 spring:
   application:
+    # 服务名称
     name: app-consumer
+  profiles:
+    active: dev
 
-# 服务端口
 server:
+  # 服务端口
   port: 10002
 
 # Eureka配置
 eureka:
   instance:
-    instance-id: ${spring.application.name}:localhost:${server.port}
-    #prefer-ip-address: true
+    # 是否微服务调用地址为IP优先(缺省值false)
+    prefer-ip-address: false
 
-    #客户端向服务器发送心跳的频率
+    # 设置机器IP
+    ip-address: 127.0.0.1
+
+    # 设置注册中心微服务名，默认值：机器主机名:应用名称:应用端口
+    instance-id: ${eureka.instance.ip-address}:${spring.application.name}:${server.port}
+
+    # 客户端向服务器发送心跳的频率(缺省值30s)
     lease-renewal-interval-in-seconds: 30
 
+    # 安全端口
     secure-port: ${server.port}
+
+    # 是否启用安全端口
     secure-port-enabled: true
+
+    # 是否启用非安全端口
     non-secure-port-enabled: false
 
   client:
-    #是否将自己作为客户端注册到注册中心(缺省true), 单点设置为false
-    #register-with-eureka: false
-    #是否从注册中心获取注册信息(缺省true), 单点设置为false
-    #fetch-registry: false
-    #从注册中心获取注册信息的间隔时间(缺省30s)
+    # 是否将自己作为客户端注册到注册中心(缺省值true)
+    register-with-eureka: true
+
+    # 是否从注册中心获取注册信息(缺省值true)
+    fetch-registry: true
+
+    # 从注册中心获取注册信息的间隔时间(缺省值30s)
+    # 测试环境，可以适当提高Client端拉取Server注册信息的频率
     registry-fetch-interval-seconds: 30
 
     service-url:
